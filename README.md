@@ -4,7 +4,7 @@
 
 Looped-WAM is a World Action Model for robotic manipulation. It shares Transformer blocks across recurrent iterations in its video backbone and action expert. During inference, the model can adjust recurrent depth to vary the amount of computation.
 
-[Project website](https://looped-wam.github.io/) · [Paper PDF](assets/looped-wam.pdf) · [Research code](https://github.com/Looped-WAM/Looped-WAM)
+[Project website](https://looped-wam.github.io/) · [Paper PDF](assets/looped-wam.pdf) · [Research code](https://github.com/Looped-WAM/Looped-WAM) · [Hugging Face](https://huggingface.co/flyflying/Looped-WAM)
 
 ## Preview locally
 
