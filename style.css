@@ -112,6 +112,7 @@ h1, h2, h3 { text-align: center; text-wrap: balance; }
 
 .authors {
   display: flex;
+  align-items: baseline;
   justify-content: center;
   flex-wrap: wrap;
   gap: .25rem .92rem;
@@ -124,7 +125,14 @@ h1, h2, h3 { text-align: center; text-wrap: balance; }
 }
 
 .affiliation { margin: 7px 0 0; color: var(--muted); font-size: .91rem; }
-.authors sup { margin-left: 2px; color: var(--accent); }
+.authors sup {
+  position: relative;
+  inset-block-start: -.45em;
+  margin-inline-start: 2px;
+  color: var(--accent);
+  line-height: 0;
+  vertical-align: baseline;
+}
 .author-notes, .author-contact { margin: 4px 0 0; color: var(--muted); font-size: .86rem; }
 .author-notes span { margin-inline: 3px; }
 .author-contact a { text-decoration: none; }
