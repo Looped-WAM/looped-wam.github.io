@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Looped-WAM is a compact World Action Model for robotic manipulation that uses weight-shared Transformer blocks and adaptive inference depth.">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Looped-WAM | Efficient Robotic Manipulation">
+  <meta property="og:description" content="A compact World Action Model with weight-shared recurrence and adaptive inference depth.">
+  <meta name="citation_title" content="Looped-WAM: Efficient Robotic Manipulation via Looped World Action Modeling">
+  <meta name="citation_author" content="Jingpeng Yang">
+  <meta name="citation_author" content="Yikun Wang">
+  <meta name="citation_author" content="Panjun Liu">
+  <meta name="citation_author" content="Xinyao Zhuang">
+  <meta name="citation_author" content="Weiye Xu">
+  <meta name="citation_author" content="Jiajun Deng">
+  <meta name="citation_author" content="Wengang Zhou">
+  <meta name="citation_author" content="Houqiang Li">
+  <title>Looped-WAM | Efficient Robotic Manipulation</title>
+  <link rel="stylesheet" href="./assets/bulma.min.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="#top"><span aria-hidden="true">↻</span> Looped-WAM</a>
+      <nav aria-label="Sections">
+        <a href="#overview">Overview</a>
+        <a href="#method">Method</a>
+        <a href="#demos">Demos</a>
+        <a href="#results">Results</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#citation">Citation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">
+                <span class="publication-name">Looped-WAM<span class="visually-hidden">:</span></span>
+                <span class="publication-subtitle">
+                  <span>Efficient Robotic Manipulation via</span>
+                  <span>Looped World Action Modeling</span>
+                </span>
+              </h1>
+              <ul class="publication-authors authors" aria-label="Authors">
+                <li>Jingpeng Yang<sup>*</sup></li><li>Yikun Wang<sup>*</sup></li><li>Panjun Liu</li><li>Xinyao Zhuang</li>
+                <li>Weiye Xu</li><li>Jiajun Deng<sup>†</sup></li><li>Wengang Zhou<sup>†</sup></li><li>Houqiang Li</li>
+              </ul>
+              <p class="affiliation">University of Science and Technology of China</p>
+              <p class="author-notes">* Equal contribution <span aria-hidden="true">·</span> † Corresponding authors</p>
+              <p class="author-contact"><a href="mailto:yang.jp@mail.ustc.edu.cn">yang.jp@mail.ustc.edu.cn</a></p>
+    
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block"><a class="external-link button is-normal is-rounded is-dark" href="./assets/looped-wam.pdf">Paper PDF <span aria-hidden="true">↗</span></a></span>
+                  <span class="link-block"><span class="button is-normal is-rounded button-pending" id="arxiv-link">arXiv <small class="pending-label">Pending</small></span></span>
+                  <span class="link-block"><a class="external-link button is-normal is-rounded is-dark" id="github-link" href="https://github.com/Looped-WAM/Looped-WAM">GitHub <span aria-hidden="true">↗</span></a></span>
+                  <span class="link-block"><a class="external-link button is-normal is-rounded is-dark" href="#citation">BibTeX</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="overview" aria-labelledby="overview-title">
+      <h2 class="title is-3" id="overview-title">Overview</h2>
+      <figure class="figure">
+        <img src="./assets/overview.png" width="1400" height="1416" alt="Overview comparing WAM acceleration strategies, showing shared loop blocks, and summarizing RoboTwin and LIBERO-Plus results.">
+        <figcaption>Figure 1 from the paper. Looped-WAM shares In-loop blocks in both branches. L1–L4 denote one to four fixed iterations, and the LIBERO-Plus bar reports the four-loop model.</figcaption>
+      </figure>
+      <p class="lead">In this paper, we propose <strong>Looped-WAM</strong>, a parameter-efficient WAM built on a looped Transformer architecture that shares block parameters across recurrent iterations. Looped-WAM matches the performance of larger models with fewer parameters and a smaller memory footprint, while allowing test-time computation to be adjusted through recurrent depth.</p>
+      <p class="lead">We further observe that recurrent refinement reduces the number of robot execution steps required for task completion. We introduce an adaptive computation mechanism that varies recurrent depth during inference to further reduce execution steps while maintaining task success rates.</p>
+    </section>
+
+    <section class="section section-divided" id="method" aria-labelledby="method-title">
+      <div class="shell">
+        <h2 class="title is-3" id="method-title">Looped-WAM architecture</h2>
+        <p class="lead">The two branches maintain modality-specific parameters while exchanging information through joint self-attention. We preserve this cross-modal interaction mechanism while reorganizing each branch into three sequential stages, namely the Pre-loop, In-loop, and Post-loop. This three-stage organization is applied to both branches while retaining joint video-action attention. The Pre-loop performs initial feature processing, the In-loop iteratively refines the latent representations, and the Post-loop produces the final predictions.</p>
+        <figure class="figure">
+          <img src="./assets/architecture.png" width="1850" height="833" loading="lazy" alt="Model diagram showing visual features cached by layer and passed to the action expert, with an adaptive exit gate and a modality-specific attention mask.">
+          <figcaption>Deep supervision trains intermediate predictions at multiple depths. A lightweight exit gate learns when to stop refining the action representation.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section shell" id="demos" aria-labelledby="demos-title">
+      <h2 class="title is-3" id="demos-title">Real-world robot videos</h2>
+      <p class="lead">We compare Looped-WAM with Fast-WAM on the AgileX NERO platform across three manipulation tasks, with 21 evaluation trials per task. To test robustness, we randomize object and container positions, vary block colors, and alternate basket placements where applicable. We collect 100 training episodes per task, train jointly on all three tasks, and then fine-tune on each task separately.</p>
+      <section class="video-task" aria-labelledby="object-classification-title">
+        <div class="task-intro">
+          <h3 class="title is-4" id="object-classification-title">Object classification</h3>
+          <p>The robot sorts two categories of objects into separate baskets. It picks up the fruits and places them in the large basket, then picks up the colored blocks and places them in the small basket.</p>
+        </div>
+        <div class="demo-grid">
+          <figure class="demo-video" id="object-classification-1">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Object classification, rollout 1"></video>
+          </figure>
+          <figure class="demo-video" id="object-classification-2">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Object classification, rollout 2"></video>
+          </figure>
+          <figure class="demo-video" id="object-classification-3">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Object classification, rollout 3"></video>
+          </figure>
+          <figure class="demo-video" id="object-classification-4">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Object classification, rollout 4"></video>
+          </figure>
+        </div>
+      </section>
+      <section class="video-task" aria-labelledby="block-tower-building-title">
+        <div class="task-intro">
+          <h3 class="title is-4" id="block-tower-building-title">Block tower building</h3>
+          <p>Starting with three blocks on the table, the robot picks up the right block and stacks it on the middle block. It then picks up the left block and places it on top of the right block to complete a stable three-block tower.</p>
+        </div>
+        <div class="demo-grid">
+          <figure class="demo-video" id="block-tower-building-1">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Block tower building, rollout 1"></video>
+          </figure>
+          <figure class="demo-video" id="block-tower-building-2">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Block tower building, rollout 2"></video>
+          </figure>
+          <figure class="demo-video" id="block-tower-building-3">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Block tower building, rollout 3"></video>
+          </figure>
+          <figure class="demo-video" id="block-tower-building-4">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Block tower building, rollout 4"></video>
+          </figure>
+        </div>
+      </section>
+      <section class="video-task" aria-labelledby="fruit-packing-and-pouring-title">
+        <div class="task-intro">
+          <h3 class="title is-4" id="fruit-packing-and-pouring-title">Fruit packing and pouring</h3>
+          <p>The robot first collects the fruits and places them in a small container. It then grasps that container and pours the fruits into a larger one.</p>
+        </div>
+        <div class="demo-grid">
+          <figure class="demo-video" id="fruit-packing-and-pouring-1">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Fruit packing and pouring, rollout 1"></video>
+          </figure>
+          <figure class="demo-video" id="fruit-packing-and-pouring-2">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Fruit packing and pouring, rollout 2"></video>
+          </figure>
+          <figure class="demo-video" id="fruit-packing-and-pouring-3">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Fruit packing and pouring, rollout 3"></video>
+          </figure>
+          <figure class="demo-video" id="fruit-packing-and-pouring-4">
+            <div class="video-placeholder"><span>Video coming soon</span></div>
+            <video controls playsinline preload="metadata" aria-label="Fruit packing and pouring, rollout 4"></video>
+          </figure>
+        </div>
+      </section>
+    </section>
+
+    <section class="section shell" id="results" aria-labelledby="results-title">
+      <h2 class="title is-3" id="results-title">Benchmark results</h2>
+      <p class="lead">We evaluate Looped-WAM on LIBERO-Plus under seven distribution shifts and on RoboTwin 2.0 in clean and randomized scenes.</p>
+
+      <h3 class="title is-4">Simulation benchmarks</h3>
+      <div class="table-wrap" role="region" aria-label="Simulation benchmark results" tabindex="0">
+        <table>
+          <thead><tr><th scope="col">Method</th><th scope="col">Parameters</th><th scope="col">LIBERO-Plus</th><th scope="col">RoboTwin 2.0</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Fast-WAM</th><td>6.0B</td><td>51.4%</td><td>91.8%</td></tr>
+            <tr class="ours"><th scope="row">Looped-WAM-Fixed</th><td>3.0B</td><td>70.24%</td><td><strong>92.8%</strong></td></tr>
+            <tr class="ours"><th scope="row">Looped-WAM-Adaptive</th><td>3.0B</td><td><strong>71.47%</strong></td><td>92.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-divided" id="analysis" aria-labelledby="analysis-title">
+      <div class="shell">
+        <h2 class="title is-3" id="analysis-title">Efficiency and recurrent depth</h2>
+        <div class="analysis-grid">
+          <div>
+            <h3 class="title is-4">Compute and latency</h3>
+            <p>RoboTwin 2.0 success rates are plotted against FLOPs and latency per action chunk. Measurements use an RTX 3090 in BF16 with 16 actions per chunk and 10 denoising steps.</p>
+            <figure class="figure">
+              <img src="./assets/efficiency.png" width="1800" height="688" loading="lazy" alt="Two plots showing RoboTwin success rates versus inference FLOPs and latency, with fixed Looped-WAM depths one through four and comparison methods.">
+            </figure>
+          </div>
+          <div>
+            <h3 class="title is-4">Effect of loop depth</h3>
+            <p>Success improves from one to three loops on both benchmarks. On five selected RoboTwin tasks, adaptive inference uses the fewest execution steps in eight of ten task–setting combinations.</p>
+            <figure class="figure">
+              <img src="./assets/loop-depth.png" width="1700" height="704" loading="lazy" alt="Success rates on LIBERO-Plus and RoboTwin rise between one and three loops, then decline at six loops. The model was trained with up to four loops.">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="citation" aria-labelledby="citation-title">
+      <h2 class="title is-3" id="citation-title">Citation</h2>
+      <div class="citation-panel">
+        <div class="citation-actions">
+          <span class="citation-format">BibTeX</span>
+          <button class="button is-dark" id="copy-citation" type="button" hidden>Copy BibTeX</button>
+        </div>
+        <pre class="citation" tabindex="0" aria-label="BibTeX citation"><code id="bibtex"><span class="bibtex-entry">@misc</span>{yangLoopedWAM,
+  <span class="bibtex-field">title</span> = {{Looped-WAM}: Efficient Robotic Manipulation via Looped World Action Modeling},
+  <span class="bibtex-field">author</span> = {Yang, Jingpeng and Wang, Yikun and Liu, Panjun and Zhuang, Xinyao and Xu, Weiye and Deng, Jiajun and Zhou, Wengang and Li, Houqiang},
+  <span class="bibtex-field">url</span> = {https://looped-wam.github.io/}
+}</code></pre>
+      </div>
+      <p class="copy-status" id="copy-status" role="status"></p>
+    </section>
+  </main>
+
+  <!-- Page template adapted from Nerfies (https://nerfies.github.io/) under CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/). Layout reference: RDT-1B (https://rdt-robotics.github.io/rdt-robotics/). -->
+</body>
+</html>
