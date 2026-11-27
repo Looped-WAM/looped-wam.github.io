@@ -1,3 +1,9 @@
+for (const video of document.querySelectorAll("video[data-playback-rate]")) {
+  const rate = Number(video.dataset.playbackRate);
+  video.defaultPlaybackRate = rate;
+  video.playbackRate = rate;
+}
+
 const copyButton = document.querySelector("#copy-citation");
 const bibtex = document.querySelector("#bibtex");
 const copyStatus = document.querySelector("#copy-status");

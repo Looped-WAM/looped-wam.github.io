@@ -240,7 +240,7 @@ tbody th { font-weight: 620; }
   background: #fff;
 }
 
-.demo-video video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #111; }
+.demo-video video { display: block; width: 100%; height: auto; background: #111; }
 .demo-video video:not([src]),
 .demo-video:has(video[src]) .video-placeholder { display: none; }
 
