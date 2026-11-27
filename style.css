@@ -140,7 +140,35 @@ h1, h2, h3 { text-align: center; text-wrap: balance; }
 .author-contact a { text-decoration: none; }
 .author-contact a:hover { text-decoration: underline; }
 .publication-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.hero .publication-links .button { min-height: 42px; gap: 7px; font-weight: 650; }
+
+.publication-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 11px;
+  border: 1px solid var(--resource-border, var(--line));
+  background: var(--resource-fill, var(--tint));
+  color: var(--resource-ink, var(--ink));
+  font-size: .77rem;
+  font-weight: 680;
+  line-height: 1.25;
+  letter-spacing: .035em;
+  white-space: nowrap;
+}
+
+a.publication-link:hover {
+  color: var(--resource-ink, var(--ink));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.publication-link-paper { --resource-fill: #e9f2fc; --resource-border: #bdd3ed; --resource-ink: #183f67; }
+.publication-link-code { --resource-fill: #222; --resource-border: #222; --resource-ink: #fff; }
+.publication-link-model { --resource-fill: #ffe68a; --resource-border: #ddbb4c; --resource-ink: #3a2c0a; }
+.publication-link-arxiv { --resource-fill: #fff8f7; --resource-border: #cf8f89; --resource-ink: #862d26; }
+span.publication-link-arxiv { border-style: dashed; }
+.pending-label { font-size: .68rem; font-weight: 500; }
 
 .button {
   display: inline-flex;
@@ -159,8 +187,6 @@ h1, h2, h3 { text-align: center; text-wrap: balance; }
 }
 
 .button:hover { background: var(--highlight); }
-.button-pending, .button-pending:hover { background: #fff; color: var(--muted); cursor: default; border-style: dashed; }
-.pending-label { font-size: .75rem; font-weight: 500; }
 
 .section { padding: clamp(32px, 5vw, 60px) 0; scroll-margin-top: 76px; }
 .section-divided { border-block: 1px solid var(--line); }
@@ -354,8 +380,7 @@ tbody th { font-weight: 620; }
   .header-inner { flex-direction: column; gap: 8px; }
   .authors { gap: .2rem .72rem; }
   nav { gap: 5px clamp(7px, 2.4vw, 12px); font-size: clamp(.75rem, 3.3vw, .82rem); }
-  .hero .publication-links .button { padding-inline: 11px; font-size: .78rem; }
-  .pending-label { font-size: .68rem; }
+  .publication-link { min-height: 40px; }
   th, td { padding-inline: 7px; }
   table { font-size: .79rem; }
 }
