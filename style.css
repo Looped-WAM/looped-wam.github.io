@@ -223,13 +223,13 @@ tbody th { font-weight: 620; }
 }
 
 #demos > .lead { text-wrap: wrap; }
+.task-intro .title { text-align: left; }
 .task-intro p { margin: 8px 0 18px; color: var(--muted); font-size: .95rem; text-align: left; }
 
 .demo-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(12px, 2vw, 20px);
-  margin: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.5vw, 14px);
 }
 
 .demo-video {
@@ -343,10 +343,10 @@ tbody th { font-weight: 620; }
 @media (max-width: 690px) {
   .site-header { position: static; }
   .section, #main { scroll-margin-top: 12px; }
+  .demo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 420px) {
-  .demo-grid { gap: 8px; }
   .video-placeholder { font-size: .69rem; gap: 5px; }
 }
 
