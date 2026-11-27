@@ -150,7 +150,7 @@ h1, h2, h3 { text-align: center; text-wrap: balance; }
   gap: 9px;
   padding: 8px 16px;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 0;
   background: #fff;
   color: var(--ink);
   font: 670 .88rem/1.35 system-ui, sans-serif;
